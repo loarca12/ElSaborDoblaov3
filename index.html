@@ -407,6 +407,244 @@
             });
         });
     </script>
+    <!-- AGREGAR ESTE SCRIPT AL FINAL DEL index.html, ANTES DE </body> -->
+<!-- DESPUÉS de los otros scripts (menu.js, cart.js, order.js) -->
+
+<script>
+// ============================================
+// SISTEMA DE CARGA INTELIGENTE DE IMÁGENES
+// ============================================
+
+(function() {
+    'use strict';
+    
+    // Configuración
+    const CONFIG = {
+        TIMEOUT: 5000,          // 5 segundos máximo por imagen
+        RETRY_ATTEMPTS: 3,      // Reintentar 3 veces
+        RETRY_DELAY: 1000,      // 1 segundo entre reintentos
+        PLACEHOLDER: 'assets/images/products/placeholder.jpg'
+    };
+    
+    // Cache de imágenes cargadas exitosamente
+    const imageCache = new Set();
+    
+    // Contador de imágenes cargadas
+    let loadedImages = 0;
+    let totalImages = 0;
+    
+    /**
+     * Cargar una imagen con reintentos
+     */
+    function loadImageWithRetry(img, src, attempts = 0) {
+        return new Promise((resolve, reject) => {
+            // Si ya está en caché, resolver inmediatamente
+            if (imageCache.has(src)) {
+                img.src = src;
+                resolve(src);
+                return;
+            }
+            
+            const tempImg = new Image();
+            const timeoutId = setTimeout(() => {
+                tempImg.src = ''; // Cancelar carga
+                
+                if (attempts < CONFIG.RETRY_ATTEMPTS) {
+                    console.log(`Reintentando imagen (${attempts + 1}/${CONFIG.RETRY_ATTEMPTS}):`, src);
+                    setTimeout(() => {
+                        loadImageWithRetry(img, src, attempts + 1)
+                            .then(resolve)
+                            .catch(reject);
+                    }, CONFIG.RETRY_DELAY);
+                } else {
+                    console.warn('Imagen falló después de reintentos:', src);
+                    reject(new Error('Timeout'));
+                }
+            }, CONFIG.TIMEOUT);
+            
+            tempImg.onload = function() {
+                clearTimeout(timeoutId);
+                img.src = src;
+                imageCache.add(src);
+                loadedImages++;
+                updateLoadingProgress();
+                resolve(src);
+            };
+            
+            tempImg.onerror = function() {
+                clearTimeout(timeoutId);
+                
+                if (attempts < CONFIG.RETRY_ATTEMPTS) {
+                    console.log(`Error de carga, reintentando (${attempts + 1}/${CONFIG.RETRY_ATTEMPTS}):`, src);
+                    setTimeout(() => {
+                        loadImageWithRetry(img, src, attempts + 1)
+                            .then(resolve)
+                            .catch(reject);
+                    }, CONFIG.RETRY_DELAY);
+                } else {
+                    console.error('Imagen falló completamente:', src);
+                    reject(new Error('Load failed'));
+                }
+            };
+            
+            tempImg.src = src;
+        });
+    }
+    
+    /**
+     * Actualizar progreso de carga
+     */
+    function updateLoadingProgress() {
+        if (totalImages > 0) {
+            const percentage = Math.round((loadedImages / totalImages) * 100);
+            console.log(`Imágenes cargadas: ${loadedImages}/${totalImages} (${percentage}%)`);
+        }
+    }
+    
+    /**
+     * Inicializar sistema de carga de imágenes
+     */
+    function initImageLoader() {
+        // Esperar a que el DOM esté listo
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', processImages);
+        } else {
+            processImages();
+        }
+    }
+    
+    /**
+     * Procesar todas las imágenes del documento
+     */
+    function processImages() {
+        // Usar MutationObserver para detectar imágenes dinámicas
+        const observer = new MutationObserver((mutations) => {
+            mutations.forEach((mutation) => {
+                mutation.addedNodes.forEach((node) => {
+                    if (node.nodeType === 1) { // ELEMENT_NODE
+                        if (node.tagName === 'IMG') {
+                            handleImage(node);
+                        } else {
+                            const images = node.querySelectorAll('img');
+                            images.forEach(handleImage);
+                        }
+                    }
+                });
+            });
+        });
+        
+        // Observar todo el documento
+        observer.observe(document.body, {
+            childList: true,
+            subtree: true
+        });
+        
+        // Procesar imágenes ya existentes
+        const existingImages = document.querySelectorAll('img');
+        totalImages = existingImages.length;
+        existingImages.forEach(handleImage);
+    }
+    
+    /**
+     * Manejar una imagen individual
+     */
+    function handleImage(img) {
+        // Ignorar imágenes que no tienen src o data-src
+        const originalSrc = img.getAttribute('src') || img.getAttribute('data-src');
+        if (!originalSrc || originalSrc === CONFIG.PLACEHOLDER) {
+            return;
+        }
+        
+        // Si la imagen ya está cargada, no hacer nada
+        if (img.complete && img.naturalHeight !== 0) {
+            imageCache.add(originalSrc);
+            return;
+        }
+        
+        // Usar Intersection Observer para lazy loading
+        if ('IntersectionObserver' in window) {
+            const imageObserver = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const imgElement = entry.target;
+                        const src = imgElement.getAttribute('data-src') || imgElement.getAttribute('src');
+                        
+                        // Mostrar placeholder mientras carga
+                        if (imgElement.src !== CONFIG.PLACEHOLDER) {
+                            imgElement.style.opacity = '0.5';
+                        }
+                        
+                        loadImageWithRetry(imgElement, src)
+                            .then(() => {
+                                imgElement.style.opacity = '1';
+                                imgElement.style.transition = 'opacity 0.3s ease-in';
+                            })
+                            .catch(() => {
+                                imgElement.src = CONFIG.PLACEHOLDER;
+                                imgElement.style.opacity = '1';
+                                imgElement.alt = 'Imagen no disponible';
+                            });
+                        
+                        observer.unobserve(imgElement);
+                    }
+                });
+            }, {
+                rootMargin: '50px' // Cargar 50px antes de que sea visible
+            });
+            
+            imageObserver.observe(img);
+        } else {
+            // Fallback para navegadores sin Intersection Observer
+            loadImageWithRetry(img, originalSrc)
+                .catch(() => {
+                    img.src = CONFIG.PLACEHOLDER;
+                });
+        }
+    }
+    
+    // Inicializar cuando el script se cargue
+    initImageLoader();
+    
+    // Precargar imágenes críticas (logo, hero)
+    const criticalImages = [
+        'propertie.png'
+    ];
+    
+    criticalImages.forEach(src => {
+        const img = new Image();
+        img.src = src;
+    });
+    
+    // Limpiar caché cada 30 minutos para liberar memoria
+    setInterval(() => {
+        if (imageCache.size > 100) {
+            console.log('Limpiando caché de imágenes...');
+            imageCache.clear();
+        }
+    }, 30 * 60 * 1000);
+    
+})();
+
+// ============================================
+// SERVICE WORKER PARA CACHÉ OFFLINE (OPCIONAL)
+// ============================================
+
+if ('serviceWorker' in navigator) {
+    window.addEventListener('load', function() {
+        // Registrar service worker solo en producción
+        if (window.location.hostname !== 'localhost' && window.location.hostname !== '127.0.0.1') {
+            navigator.serviceWorker.register('/sw.js')
+                .then(function(registration) {
+                    console.log('Service Worker registrado exitosamente:', registration.scope);
+                })
+                .catch(function(error) {
+                    console.log('Error al registrar Service Worker:', error);
+                });
+        }
+    });
+}
+</script>
 </body>
 </html>
+
 
