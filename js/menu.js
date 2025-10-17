@@ -1,4 +1,4 @@
-// menu.js - OPTIMIZADO PARA CARGA RÁPIDA
+// menu.js - OPTIMIZADO Y CORREGIDO
 
 // Definición de productos
 const products = {
@@ -15,7 +15,7 @@ const products = {
     'cocacola': { name: 'Coca Cola', price: 6, category: 'bebidas' },
     'sprite': { name: 'Sprite', price: 6, category: 'bebidas' },
     'fanta': { name: 'Fanta Naranja', price: 6, category: 'bebidas' },
-    'agua': { name: 'Agua Pura', price: 4, category: 'bebidas' }
+    'agua': { name: 'Agua Pura', price: 8, category: 'bebidas' } // ✅ CORREGIDO: era 4, ahora es 8
 };
 
 const combos = {
@@ -110,7 +110,6 @@ const imageLoader = {
     loadedImages: new Set(),
     
     init() {
-        // Crear Intersection Observer
         this.observer = new IntersectionObserver(
             (entries) => {
                 entries.forEach(entry => {
@@ -120,7 +119,7 @@ const imageLoader = {
                 });
             },
             {
-                rootMargin: '50px', // Cargar 50px antes de ser visible
+                rootMargin: '50px',
                 threshold: 0.01
             }
         );
@@ -130,7 +129,6 @@ const imageLoader = {
         const src = img.dataset.src;
         if (!src || this.loadedImages.has(src)) return;
         
-        // Crear imagen temporal para verificar carga
         const tempImg = new Image();
         
         tempImg.onload = () => {
@@ -161,7 +159,6 @@ const imageLoader = {
 // ============================================
 
 function getImagePath(id) {
-    // Intentar WebP primero, fallback a JPG
     return `assets/images/products/${id}.webp`;
 }
 
@@ -257,7 +254,6 @@ function renderMenu() {
 
     let html = '';
 
-    // PROMOCIONES ESPECIALES
     html += `
         <div class="menu-category">
             <div class="category-header promo-header">
@@ -274,7 +270,6 @@ function renderMenu() {
 
     html += `</div></div>`;
 
-    // COMBOS NORMALES
     html += `
         <div class="menu-category">
             <div class="category-header">
@@ -290,7 +285,6 @@ function renderMenu() {
 
     html += `</div></div>`;
 
-    // DOBLADAS INDIVIDUALES
     html += `
         <div class="menu-category">
             <div class="category-header">
@@ -308,7 +302,6 @@ function renderMenu() {
 
     html += `</div></div>`;
 
-    // BEBIDAS
     html += `
         <div class="menu-category">
             <div class="category-header">
@@ -327,7 +320,6 @@ function renderMenu() {
 
     menuContainer.innerHTML = html;
     
-    // Inicializar lazy loading DESPUÉS de renderizar
     setTimeout(() => {
         initLazyLoading();
     }, 100);
@@ -348,7 +340,7 @@ function initLazyLoading() {
 }
 
 // ============================================
-// FUNCIONES DE COMBOS (sin cambios)
+// FUNCIONES DE COMBOS
 // ============================================
 
 function openComboModal(comboId) {
@@ -568,18 +560,21 @@ function saveCombo() {
         }
     }
 
+    // ✅ CORREGIDO: Conversión explícita a números para evitar concatenación
     comboData.extras = [];
     let extraPrice = 0;
     document.querySelectorAll('.extra-check:checked').forEach(checkbox => {
         const extraInfo = extrasOptions.extras.find(e => e.id === checkbox.id);
         if (extraInfo) {
             comboData.extras.push(extraInfo.name);
-            extraPrice += extraInfo.price;
+            extraPrice += Number(extraInfo.price); // Convertir explícitamente a número
         }
     });
 
     comboData.extraPrice = extraPrice;
-    comboData.price = combo.price + extraPrice;
+    comboData.price = Number(combo.price) + extraPrice; // Asegurar suma numérica
+
+    console.log('DEBUG - Precio base:', combo.price, 'Extras:', extraPrice, 'Total:', comboData.price);
 
     window.order.push(comboData);
     closeModal();
