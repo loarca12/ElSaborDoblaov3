@@ -1860,3 +1860,48 @@ body {
         padding: var(--spacing-xs) var(--spacing-md);
     }
 }
+/* ============================================
+   SISTEMA DE CARGA DE IMÁGENES
+   ============================================ */
+
+/* Placeholder mientras cargan las imágenes */
+.menu-item-image,
+.combo-image {
+    background: linear-gradient(90deg, var(--gray-200) 25%, var(--gray-100) 50%, var(--gray-200) 75%);
+    background-size: 200% 100%;
+    animation: shimmer 1.5s infinite;
+}
+
+.menu-item-image.loaded,
+.combo-image.loaded {
+    background: none;
+    animation: none;
+}
+
+@keyframes shimmer {
+    0% {
+        background-position: 200% 0;
+    }
+    100% {
+        background-position: -200% 0;
+    }
+}
+
+/* Transición suave cuando carga la imagen */
+.menu-item-image img,
+.combo-image img {
+    opacity: 0;
+    transition: opacity 0.3s ease-in;
+}
+
+.menu-item-image img.loaded,
+.combo-image img.loaded {
+    opacity: 1;
+}
+
+/* Estado de error */
+.menu-item-image img[src*="placeholder"],
+.combo-image img[src*="placeholder"] {
+    opacity: 0.6;
+    filter: grayscale(100%);
+}
