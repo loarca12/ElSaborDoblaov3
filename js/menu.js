@@ -194,6 +194,7 @@ function createMenuItem(id, product) {
                      alt="${product.name}" 
                      width="85" 
                      height="85"
+                     loading="lazy"
                      onerror="this.onerror=null; this.src='assets/images/products/placeholder.jpg';">
             </div>
             <div class="menu-item-content">
@@ -215,7 +216,7 @@ function createMenuItem(id, product) {
     `;
 }
 
-// Crear tarjeta de combo - TODO CLICKEABLE
+// Crear tarjeta de combo - TODO CLICKEABLE (ARREGLADO)
 function createComboCard(comboId, combo) {
     const imagePath = `assets/images/products/${comboId}.jpg`;
     return `
@@ -225,13 +226,14 @@ function createComboCard(comboId, combo) {
                      alt="${combo.name}" 
                      width="100%" 
                      height="150"
+                     loading="lazy"
                      onerror="this.onerror=null; this.src='assets/images/products/placeholder.jpg';">
                 <div class="menu-item-badge combo-badge">Q${combo.price}</div>
             </div>
             <div class="menu-item-content">
                 <h4>${combo.name}</h4>
                 <p>${combo.description}</p>
-                <button class="combo-btn" onclick="event.stopPropagation();">
+                <button class="combo-btn" onclick="openComboModal('${comboId}'); event.stopPropagation();">
                     ✨ Personalizar Combo
                 </button>
                 <div id="${comboId}-combos-list" class="combo-added-list" onclick="event.stopPropagation()"></div>
