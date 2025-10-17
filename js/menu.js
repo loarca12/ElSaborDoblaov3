@@ -1,8 +1,7 @@
-// menu.js - Sistema de Menú y Productos
+// menu.js - OPTIMIZADO PARA CARGA RÁPIDA
 
 // Definición de productos
 const products = {
-    // Dobladas individuales
     'doblada-res': { name: 'Doblada de Res', price: 18, category: 'dobladas' },
     'doblada-pollo': { name: 'Doblada de Pollo', price: 18, category: 'dobladas' },
     'doblada-cerdo': { name: 'Doblada de Cerdo', price: 18, category: 'dobladas' },
@@ -10,8 +9,6 @@ const products = {
     'doblada-queso': { name: 'Doblada de Queso', price: 18, category: 'dobladas' },
     'doblada-queso-jalapeno': { name: 'Doblada de Queso Jalapeño', price: 18, category: 'dobladas' },
     'doblada-queso-loroco': { name: 'Doblada de Queso Loroco', price: 18, category: 'dobladas' },
-    
-    // Bebidas
     'jamaica': { name: 'Jamaica Natural', price: 8, category: 'bebidas' },
     'horchata': { name: 'Horchata Casera', price: 8, category: 'bebidas' },
     'limonada': { name: 'Limonada Fresca', price: 8, category: 'bebidas' },
@@ -21,7 +18,6 @@ const products = {
     'agua': { name: 'Agua Pura', price: 4, category: 'bebidas' }
 };
 
-// Definición de combos
 const combos = {
     'combo-doblao': {
         name: 'El Doblao',
@@ -96,7 +92,6 @@ const combos = {
     }
 };
 
-// Opciones de extras
 const extrasOptions = {
     extras: [
         { id: 'extra-queso', name: 'Extra Queso', price: 6 },
@@ -106,96 +101,84 @@ const extrasOptions = {
     ]
 };
 
-// Generar HTML del menú
-function renderMenu() {
-    const menuContainer = document.getElementById('menuContainer');
-    if (!menuContainer) return;
+// ============================================
+// SISTEMA DE LAZY LOADING MEJORADO
+// ============================================
 
-    let html = '';
-
-    // 🔥 PROMOCIONES ESPECIALES
-    html += `
-        <div class="menu-category">
-            <div class="category-header promo-header">
-                🔥 PROMOCIONES ESPECIALES
-                <span style="float: right; font-size: 0.85rem; opacity: 0.95;">¡Los más vendidos!</span>
-            </div>
-            <div class="menu-grid">
-    `;
-
-    html += createComboCard('combo-doblao', combos['combo-doblao']);
-    html += createComboCard('tacos-res', combos['tacos-res']);
-    html += createComboCard('combo-taquero', combos['combo-taquero']);
-    html += createComboCard('combo-familiar', combos['combo-familiar']);
-
-    html += `</div></div>`;
-
-    // 🍽️ COMBOS NORMALES
-    html += `
-        <div class="menu-category">
-            <div class="category-header">
-                🍽️ Combos Completos
-            </div>
-            <div class="menu-grid">
-    `;
-
-    html += createComboCard('combo-individual', combos['combo-individual']);
-    html += createComboCard('combo-triple', combos['combo-triple']);
-    html += createComboCard('tacos-cerdo', combos['tacos-cerdo']);
-    html += createComboCard('tacos-pollo', combos['tacos-pollo']);
-
-    html += `</div></div>`;
-
-    // 🥙 DOBLADAS INDIVIDUALES
-    html += `
-        <div class="menu-category">
-            <div class="category-header">
-                🥙 Dobladas Individuales
-                <span style="float: right; font-size: 0.9rem; opacity: 0.9;">Q18 c/u</span>
-            </div>
-            <div class="menu-grid menu-grid-items">
-    `;
-
-    Object.entries(products).forEach(([id, product]) => {
-        if (product.category === 'dobladas') {
-            html += createMenuItem(id, product);
+const imageLoader = {
+    observer: null,
+    loadedImages: new Set(),
+    
+    init() {
+        // Crear Intersection Observer
+        this.observer = new IntersectionObserver(
+            (entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        this.loadImage(entry.target);
+                    }
+                });
+            },
+            {
+                rootMargin: '50px', // Cargar 50px antes de ser visible
+                threshold: 0.01
+            }
+        );
+    },
+    
+    loadImage(img) {
+        const src = img.dataset.src;
+        if (!src || this.loadedImages.has(src)) return;
+        
+        // Crear imagen temporal para verificar carga
+        const tempImg = new Image();
+        
+        tempImg.onload = () => {
+            img.src = src;
+            img.classList.add('loaded');
+            this.loadedImages.add(src);
+            this.observer.unobserve(img);
+        };
+        
+        tempImg.onerror = () => {
+            img.src = 'assets/images/products/placeholder.jpg';
+            img.classList.add('loaded');
+            this.observer.unobserve(img);
+        };
+        
+        tempImg.src = src;
+    },
+    
+    observe(img) {
+        if (this.observer) {
+            this.observer.observe(img);
         }
-    });
+    }
+};
 
-    html += `</div></div>`;
+// ============================================
+// FUNCIONES DE RENDERIZADO OPTIMIZADAS
+// ============================================
 
-    // 🥤 BEBIDAS
-    html += `
-        <div class="menu-category">
-            <div class="category-header">
-                🥤 Bebidas Refrescantes
-            </div>
-            <div class="menu-grid menu-grid-items">
-    `;
-
-    Object.entries(products).forEach(([id, product]) => {
-        if (product.category === 'bebidas') {
-            html += createMenuItem(id, product);
-        }
-    });
-
-    html += `</div></div>`;
-
-    menuContainer.innerHTML = html;
+function getImagePath(id) {
+    // Intentar WebP primero, fallback a JPG
+    return `assets/images/products/${id}.webp`;
 }
 
-// Crear item individual del menú - TODO CLICKEABLE
 function createMenuItem(id, product) {
-    const imagePath = `assets/images/products/${id}.jpg`;
+    const imagePath = getImagePath(id);
+    const fallbackPath = `assets/images/products/${id}.jpg`;
+    
     return `
         <div class="menu-item" id="item-${id}" onclick="handleMenuItemClick('${id}')">
             <div class="menu-item-image">
-                <img src="${imagePath}" 
+                <img data-src="${imagePath}"
+                     src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='85' height='85'%3E%3Crect fill='%23f0f0f0'/%3E%3C/svg%3E"
                      alt="${product.name}" 
                      width="85" 
                      height="85"
                      loading="lazy"
-                     onerror="this.onerror=null; this.src='assets/images/products/placeholder.jpg';">
+                     onerror="this.onerror=null; this.src='${fallbackPath}'; if(this.error) this.src='assets/images/products/placeholder.jpg';">
             </div>
             <div class="menu-item-content">
                 <div class="menu-item-header">
@@ -216,18 +199,20 @@ function createMenuItem(id, product) {
     `;
 }
 
-// Crear tarjeta de combo - TODO CLICKEABLE (ARREGLADO)
 function createComboCard(comboId, combo) {
-    const imagePath = `assets/images/products/${comboId}.jpg`;
+    const imagePath = getImagePath(comboId);
+    const fallbackPath = `assets/images/products/${comboId}.jpg`;
+    
     return `
         <div class="combo-card" onclick="openComboModal('${comboId}')">
             <div class="menu-item-image combo-image">
-                <img src="${imagePath}" 
+                <img data-src="${imagePath}"
+                     src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='150'%3E%3Crect fill='%23f0f0f0'/%3E%3C/svg%3E"
                      alt="${combo.name}" 
                      width="100%" 
                      height="150"
                      loading="lazy"
-                     onerror="this.onerror=null; this.src='assets/images/products/placeholder.jpg';">
+                     onerror="this.onerror=null; this.src='${fallbackPath}'; if(this.error) this.src='assets/images/products/placeholder.jpg';">
                 <div class="menu-item-badge combo-badge">Q${combo.price}</div>
             </div>
             <div class="menu-item-content">
@@ -242,7 +227,6 @@ function createComboCard(comboId, combo) {
     `;
 }
 
-// Obtener descripción del producto
 function getProductDescription(id) {
     const descriptions = {
         'doblada-res': 'Deliciosa carne de res sazonada con especias tradicionales',
@@ -263,7 +247,110 @@ function getProductDescription(id) {
     return descriptions[id] || '';
 }
 
-// Abrir modal de combo
+// ============================================
+// RENDERIZADO DEL MENÚ
+// ============================================
+
+function renderMenu() {
+    const menuContainer = document.getElementById('menuContainer');
+    if (!menuContainer) return;
+
+    let html = '';
+
+    // PROMOCIONES ESPECIALES
+    html += `
+        <div class="menu-category">
+            <div class="category-header promo-header">
+                🔥 PROMOCIONES ESPECIALES
+                <span style="float: right; font-size: 0.85rem; opacity: 0.95;">¡Los más vendidos!</span>
+            </div>
+            <div class="menu-grid">
+    `;
+
+    html += createComboCard('combo-doblao', combos['combo-doblao']);
+    html += createComboCard('tacos-res', combos['tacos-res']);
+    html += createComboCard('combo-taquero', combos['combo-taquero']);
+    html += createComboCard('combo-familiar', combos['combo-familiar']);
+
+    html += `</div></div>`;
+
+    // COMBOS NORMALES
+    html += `
+        <div class="menu-category">
+            <div class="category-header">
+                🍽️ Combos Completos
+            </div>
+            <div class="menu-grid">
+    `;
+
+    html += createComboCard('combo-individual', combos['combo-individual']);
+    html += createComboCard('combo-triple', combos['combo-triple']);
+    html += createComboCard('tacos-cerdo', combos['tacos-cerdo']);
+    html += createComboCard('tacos-pollo', combos['tacos-pollo']);
+
+    html += `</div></div>`;
+
+    // DOBLADAS INDIVIDUALES
+    html += `
+        <div class="menu-category">
+            <div class="category-header">
+                🥙 Dobladas Individuales
+                <span style="float: right; font-size: 0.9rem; opacity: 0.9;">Q18 c/u</span>
+            </div>
+            <div class="menu-grid menu-grid-items">
+    `;
+
+    Object.entries(products).forEach(([id, product]) => {
+        if (product.category === 'dobladas') {
+            html += createMenuItem(id, product);
+        }
+    });
+
+    html += `</div></div>`;
+
+    // BEBIDAS
+    html += `
+        <div class="menu-category">
+            <div class="category-header">
+                🥤 Bebidas Refrescantes
+            </div>
+            <div class="menu-grid menu-grid-items">
+    `;
+
+    Object.entries(products).forEach(([id, product]) => {
+        if (product.category === 'bebidas') {
+            html += createMenuItem(id, product);
+        }
+    });
+
+    html += `</div></div>`;
+
+    menuContainer.innerHTML = html;
+    
+    // Inicializar lazy loading DESPUÉS de renderizar
+    setTimeout(() => {
+        initLazyLoading();
+    }, 100);
+}
+
+// ============================================
+// INICIALIZAR LAZY LOADING
+// ============================================
+
+function initLazyLoading() {
+    imageLoader.init();
+    
+    const allImages = document.querySelectorAll('img[data-src]');
+    
+    allImages.forEach(img => {
+        imageLoader.observe(img);
+    });
+}
+
+// ============================================
+// FUNCIONES DE COMBOS (sin cambios)
+// ============================================
+
 function openComboModal(comboId) {
     const combo = combos[comboId];
     if (!combo) return;
@@ -277,7 +364,6 @@ function openComboModal(comboId) {
         🎯 Personaliza tu <strong style="color: var(--primary-red);">${combo.name}</strong>
     </p>`;
 
-    // El Taquero - Combo especial
     if (combo.type === 'tacos-multiple') {
         html += `
             <div class="modal-group combo-info">
@@ -290,34 +376,17 @@ function openComboModal(comboId) {
             </div>
         `;
 
-        html += `<div class="modal-group">
-            <label>🌮 Porción 1 (3 tacos):</label>
-            <select id="porcion0" class="modal-select">
-                <option value="res">🥩 Tacos de Res</option>
-                <option value="pollo">🍗 Tacos de Pollo</option>
-                <option value="cerdo">🐷 Tacos de Cerdo</option>
-            </select>
-        </div>`;
+        for (let i = 0; i < 3; i++) {
+            html += `<div class="modal-group">
+                <label>🌮 Porción ${i + 1} (3 tacos):</label>
+                <select id="porcion${i}" class="modal-select">
+                    <option value="res">🥩 Tacos de Res</option>
+                    <option value="pollo">🍗 Tacos de Pollo</option>
+                    <option value="cerdo">🐷 Tacos de Cerdo</option>
+                </select>
+            </div>`;
+        }
 
-        html += `<div class="modal-group">
-            <label>🌮 Porción 2 (3 tacos):</label>
-            <select id="porcion1" class="modal-select">
-                <option value="res">🥩 Tacos de Res</option>
-                <option value="pollo">🍗 Tacos de Pollo</option>
-                <option value="cerdo">🐷 Tacos de Cerdo</option>
-            </select>
-        </div>`;
-
-        html += `<div class="modal-group">
-            <label>🌮 Porción 3 (3 tacos):</label>
-            <select id="porcion2" class="modal-select">
-                <option value="res">🥩 Tacos de Res</option>
-                <option value="pollo">🍗 Tacos de Pollo</option>
-                <option value="cerdo">🐷 Tacos de Cerdo</option>
-            </select>
-        </div>`;
-
-        // 3 Bebidas
         for (let i = 0; i < 3; i++) {
             html += `
                 <div class="modal-group">
@@ -335,7 +404,6 @@ function openComboModal(comboId) {
             `;
         }
     }
-    // Tacos simples
     else if (combo.type === 'tacos') {
         html += `
             <div class="modal-group combo-info">
@@ -363,7 +431,6 @@ function openComboModal(comboId) {
             </div>
         `;
     }
-    // Combos de dobladas
     else {
         for (let i = 0; i < combo.numDobladas; i++) {
             html += `
@@ -382,7 +449,6 @@ function openComboModal(comboId) {
             `;
         }
 
-        // Bebidas (single o multiple)
         if (combo.includeDrinks) {
             for (let i = 0; i < combo.includeDrinks; i++) {
                 html += `
@@ -418,7 +484,6 @@ function openComboModal(comboId) {
         }
     }
 
-    // Extras opcionales
     if (combo.includeExtras) {
         html += `
             <div class="extras-group">
@@ -445,7 +510,6 @@ function openComboModal(comboId) {
     document.getElementById('comboModal').style.display = 'block';
 }
 
-// Guardar combo
 function saveCombo() {
     if (!window.currentCombo) return;
 
@@ -459,7 +523,6 @@ function saveCombo() {
         originalPrice: combo.price
     };
 
-    // El Taquero - 3 porciones
     if (combo.type === 'tacos-multiple') {
         comboData.porciones = [];
         for (let i = 0; i < combo.numPorciones; i++) {
@@ -473,7 +536,6 @@ function saveCombo() {
             if (bebidaSelect) comboData.bebidas.push(bebidaSelect.value);
         }
     }
-    // Tacos simples
     else if (combo.type === 'tacos') {
         comboData.tacos = {
             type: combo.meatType,
@@ -485,7 +547,6 @@ function saveCombo() {
             comboData.bebida = bebidaSelect.value;
         }
     }
-    // Dobladas
     else {
         comboData.dobladas = [];
         for (let i = 0; i < combo.numDobladas; i++) {
@@ -493,7 +554,6 @@ function saveCombo() {
             if (select) comboData.dobladas.push(select.value);
         }
 
-        // Bebidas múltiples o única
         if (combo.includeDrinks) {
             comboData.bebidas = [];
             for (let i = 0; i < combo.includeDrinks; i++) {
@@ -508,7 +568,6 @@ function saveCombo() {
         }
     }
 
-    // Extras
     comboData.extras = [];
     let extraPrice = 0;
     document.querySelectorAll('.extra-check:checked').forEach(checkbox => {
@@ -522,20 +581,21 @@ function saveCombo() {
     comboData.extraPrice = extraPrice;
     comboData.price = combo.price + extraPrice;
 
-    // Agregar al carrito
     window.order.push(comboData);
     closeModal();
     updateCart();
     showToast('🎉 ¡Combo agregado exitosamente!', 'success');
 }
 
-// Cerrar modal
 function closeModal() {
     document.getElementById('comboModal').style.display = 'none';
     window.currentCombo = null;
 }
 
-// Inicializar menú al cargar
+// ============================================
+// INICIALIZACIÓN
+// ============================================
+
 document.addEventListener('DOMContentLoaded', function() {
     renderMenu();
 });
