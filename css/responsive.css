@@ -1,0 +1,1436 @@
+/* responsive.css - Sistema Responsive Moderno para Todos los Dispositivos */
+
+/* ============================================
+   TABLETS Y PANTALLAS MEDIANAS (max-width: 768px)
+   ============================================ */
+@media (max-width: 768px) {
+    /* Navbar móvil */
+    .menu-toggle {
+        display: flex;
+        z-index: 101;
+    }
+    
+    .nav-menu {
+        position: fixed;
+        top: 62px;
+        left: -100%;
+        width: 100%;
+        background: var(--bg-card);
+        flex-direction: column;
+        gap: 0;
+        padding: var(--spacing-xl) 0;
+        box-shadow: var(--shadow-lg);
+        transition: left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        border-top: 1px solid var(--gray-200);
+    }
+    
+    .nav-menu.active {
+        left: 0;
+    }
+    
+    .nav-menu li {
+        width: 100%;
+        text-align: center;
+    }
+    
+    .nav-menu li a {
+        display: block;
+        padding: var(--spacing-lg) var(--spacing-xl);
+        border-radius: 0;
+        border-bottom: 1px solid var(--gray-100);
+        width: 100%;
+        color: var(--gray-800);
+    }
+    
+    .nav-menu li a:hover,
+    .nav-menu li a.active {
+        background: var(--primary-red);
+        color: var(--white);
+        transform: none;
+    }
+    
+    /* Hero ajustado */
+    .hero {
+        padding: var(--spacing-2xl) var(--spacing-lg);
+    }
+    
+    .hero h1 {
+        font-size: 1.375rem;
+    }
+    
+    .hero-subtitle {
+        font-size: 0.875rem;
+    }
+    
+    .hero-logo {
+        max-height: 60px;
+    }
+}
+
+/* ============================================
+   MÓVILES MEDIANOS (max-width: 480px)
+   ============================================ */
+@media (max-width: 480px) {
+    :root {
+        /* Ajustar spacing para móviles */
+        --spacing-xl: 16px;
+        --spacing-2xl: 20px;
+        --spacing-3xl: 28px;
+    }
+    
+    body {
+        padding-bottom: 95px;
+    }
+    
+    /* Navbar más compacto */
+    .nav-container {
+        padding: 10px var(--spacing-lg);
+    }
+    
+    .nav-logo {
+        height: 34px;
+    }
+    
+    .menu-toggle span {
+        width: 22px;
+        height: 2.5px;
+    }
+    
+    .nav-menu {
+        top: 56px;
+    }
+    
+    /* Hero compacto */
+    .hero {
+        padding: var(--spacing-2xl) var(--spacing-lg);
+    }
+    
+    .hero-logo {
+        max-height: 55px;
+        margin-bottom: var(--spacing-sm);
+    }
+    
+    .hero h1 {
+        font-size: 1.25rem;
+        margin-bottom: var(--spacing-xs);
+    }
+    
+    .hero-subtitle {
+        font-size: 0.8125rem;
+        margin-bottom: var(--spacing-lg);
+    }
+    
+    /* Container */
+    .container {
+        padding: 0 var(--spacing-md);
+    }
+    
+    /* Secciones */
+    .section {
+        margin-bottom: var(--spacing-xl);
+    }
+    
+    .section-title {
+        gap: var(--spacing-sm);
+        margin-bottom: var(--spacing-md);
+    }
+    
+    .section-icon {
+        font-size: 1.25rem;
+    }
+    
+    .section-title h2 {
+        font-size: 1rem;
+    }
+    
+    /* Formulario */
+    .form-group {
+        margin-bottom: var(--spacing-md);
+    }
+    
+    .form-group label {
+        font-size: 0.8125rem;
+        margin-bottom: 6px;
+    }
+    
+    input, textarea, select {
+        padding: 11px 14px;
+        font-size: 16px; /* IMPORTANTE: mantener 16px para evitar zoom en iOS */
+        border-radius: var(--radius-sm);
+    }
+    
+    textarea {
+        min-height: 70px;
+    }
+    
+    /* Categorías */
+    .menu-category {
+        margin-bottom: var(--spacing-2xl);
+    }
+    
+    .category-header {
+        padding: 11px var(--spacing-lg);
+        font-size: 0.875rem;
+        margin-bottom: var(--spacing-md);
+    }
+    
+    /* Menu items - ajustados para móvil */
+    .menu-item {
+        margin-bottom: 10px;
+    }
+    
+    .menu-item-image {
+        width: 75px;
+        height: 75px;
+        margin: 8px;
+    }
+    
+    .menu-item-content {
+        padding: var(--spacing-sm) var(--spacing-md) var(--spacing-sm) 0;
+    }
+    
+    .menu-item h4 {
+        font-size: 0.875rem;
+        margin-bottom: 3px;
+    }
+    
+    .menu-item p {
+        font-size: 0.6875rem;
+        margin-bottom: 6px;
+        -webkit-line-clamp: 2;
+    }
+    
+    .price {
+        font-size: 0.9375rem;
+    }
+    
+    /* Combos en móvil */
+    .combo-card .menu-item-image {
+        height: 130px;
+    }
+    
+    .combo-image .menu-item-badge,
+    .combo-card .menu-item-badge {
+        top: var(--spacing-sm);
+        right: var(--spacing-sm);
+        padding: 5px 12px;
+        font-size: 0.875rem;
+    }
+    
+    .combo-card .menu-item-content {
+        padding: var(--spacing-md);
+    }
+    
+    .combo-card h4 {
+        font-size: 1rem;
+        margin-bottom: 6px;
+    }
+    
+    .combo-card p {
+        font-size: 0.8125rem;
+        margin-bottom: var(--spacing-md);
+    }
+    
+    /* Controles de cantidad */
+    .quantity-controls {
+        padding: 10px var(--spacing-md);
+        gap: 6px;
+    }
+    
+    .qty-btn {
+        width: 30px;
+        height: 30px;
+        font-size: 1.125rem;
+    }
+    
+    .qty-display {
+        font-size: 0.9375rem;
+        min-width: 35px;
+    }
+    
+    .clear-item-btn {
+        font-size: 0.8125rem;
+        padding: 6px 10px;
+    }
+    
+    /* Botón de combo */
+    .combo-btn {
+        padding: 11px var(--spacing-lg);
+        font-size: 0.875rem;
+    }
+    
+    .combo-added-list {
+        margin-top: var(--spacing-md);
+        padding-top: var(--spacing-md);
+    }
+    
+    .combo-added-item {
+        padding: 10px var(--spacing-md);
+        font-size: 0.8125rem;
+        flex-direction: row;
+        flex-wrap: wrap;
+    }
+    
+    .remove-combo-btn {
+        font-size: 0.6875rem;
+        padding: 4px 10px;
+    }
+    
+    /* Carrito sticky */
+    .cart-summary {
+        padding: 10px var(--spacing-md);
+    }
+    
+    .cart-content {
+        gap: 10px;
+    }
+    
+    .cart-items {
+        font-size: 0.75rem;
+    }
+    
+    .cart-total {
+        font-size: 1rem;
+    }
+    
+    .whatsapp-btn {
+        padding: 11px 20px;
+        font-size: 0.875rem;
+        gap: 6px;
+    }
+    
+    /* Modal */
+    .modal {
+        padding: var(--spacing-lg);
+    }
+    
+    .modal-content {
+        padding: var(--spacing-2xl) var(--spacing-lg);
+        margin: 30px auto;
+        border-radius: var(--radius-md);
+    }
+    
+    .modal h3 {
+        font-size: 1.125rem;
+        margin-bottom: var(--spacing-lg);
+    }
+    
+    .modal-group {
+        margin-bottom: var(--spacing-md);
+    }
+    
+    .modal-group label {
+        font-size: 0.8125rem;
+        margin-bottom: 6px;
+    }
+    
+    .modal-select {
+        padding: 11px 14px;
+        font-size: 16px; /* Evitar zoom iOS */
+    }
+    
+    .extras-group {
+        margin-top: var(--spacing-lg);
+        padding-top: var(--spacing-lg);
+    }
+    
+    .extra-option {
+        padding: var(--spacing-sm);
+        margin-bottom: var(--spacing-sm);
+    }
+    
+    .extra-option input[type="checkbox"] {
+        width: 18px;
+        height: 18px;
+        margin-right: 10px;
+    }
+    
+    .extra-option label {
+        font-size: 0.8125rem;
+    }
+    
+    .modal-buttons {
+        gap: 10px;
+        margin-top: var(--spacing-lg);
+    }
+    
+    .btn-cancel, .btn-save {
+        padding: 12px;
+        font-size: 0.875rem;
+    }
+    
+    /* Order Review */
+    .order-review {
+        max-height: 280px;
+        padding-right: 6px;
+    }
+    
+    .order-item-review {
+        padding: var(--spacing-md);
+        font-size: 0.875rem;
+        margin-bottom: 8px;
+    }
+    
+    .order-item-details {
+        font-size: 0.75rem;
+        margin-top: 6px;
+    }
+    
+    .order-total-section {
+        padding-top: var(--spacing-md);
+        margin-top: var(--spacing-lg);
+    }
+    
+    .order-total-line {
+        font-size: 1.125rem;
+        flex-direction: column;
+        gap: 6px;
+        align-items: flex-start;
+    }
+    
+    .clear-cart-btn {
+        padding: 10px var(--spacing-lg);
+        font-size: 0.8125rem;
+        margin-top: var(--spacing-md);
+    }
+    
+    /* Success Message */
+    .success-message {
+        padding: var(--spacing-2xl) var(--spacing-3xl);
+        width: 90%;
+        max-width: 320px;
+        border-radius: var(--radius-md);
+    }
+    
+    /* Footer */
+    .footer {
+        padding: var(--spacing-2xl) var(--spacing-lg) var(--spacing-lg);
+        margin-top: var(--spacing-3xl);
+    }
+    
+    .footer-content {
+        gap: var(--spacing-lg);
+        text-align: center;
+    }
+    
+    .footer-section h3 {
+        font-size: 0.9375rem;
+        margin-bottom: var(--spacing-sm);
+    }
+    
+    .footer-section p {
+        font-size: 0.8125rem;
+        margin-bottom: 6px;
+    }
+    
+    .footer-bottom {
+        padding-top: var(--spacing-lg);
+        font-size: 0.75rem;
+    }
+}
+
+/* ============================================
+   MÓVILES PEQUEÑOS (max-width: 380px)
+   ============================================ */
+@media (max-width: 380px) {
+    body {
+        padding-bottom: 100px;
+    }
+    
+    /* Hero ultra compacto */
+    .hero {
+        padding: var(--spacing-lg);
+    }
+    
+    .hero-logo {
+        max-height: 50px;
+    }
+    
+    .hero h1 {
+        font-size: 1.125rem;
+    }
+    
+    .hero-subtitle {
+        font-size: 0.75rem;
+    }
+    
+    /* Container más estrecho */
+    .container {
+        padding: 0 12px;
+    }
+    
+    /* Sección más compacta */
+    .section-title h2 {
+        font-size: 0.9375rem;
+    }
+    
+    .section-icon {
+        font-size: 1.125rem;
+    }
+    
+    /* Menu items más pequeños */
+    .menu-item-image {
+        width: 68px;
+        height: 68px;
+        margin: 6px;
+    }
+    
+    .menu-item h4 {
+        font-size: 0.8125rem;
+    }
+    
+    .menu-item p {
+        font-size: 0.6875rem;
+        -webkit-line-clamp: 1;
+    }
+    
+    .price {
+        font-size: 0.875rem;
+    }
+    
+    /* Combos */
+    .combo-card .menu-item-image {
+        height: 110px;
+    }
+    
+    .combo-card h4 {
+        font-size: 0.9375rem;
+    }
+    
+    /* Controles */
+    .qty-btn {
+        width: 28px;
+        height: 28px;
+        font-size: 1rem;
+    }
+    
+    .qty-display {
+        font-size: 0.875rem;
+        min-width: 30px;
+    }
+    
+    /* Carrito */
+    .cart-items {
+        font-size: 0.6875rem;
+    }
+    
+    .cart-total {
+        font-size: 0.9375rem;
+    }
+    
+    .whatsapp-btn {
+        padding: 10px 16px;
+        font-size: 0.8125rem;
+    }
+}
+
+/* ============================================
+   MÓVILES MUY PEQUEÑOS (max-width: 320px)
+   ============================================ */
+@media (max-width: 320px) {
+    .hero h1 {
+        font-size: 1rem;
+    }
+    
+    .menu-item-image {
+        width: 60px;
+        height: 60px;
+    }
+    
+    .menu-item h4 {
+        font-size: 0.75rem;
+    }
+    
+    .combo-card .menu-item-image {
+        height: 100px;
+    }
+    
+    .qty-btn {
+        width: 26px;
+        height: 26px;
+    }
+    
+    .whatsapp-btn {
+        padding: 9px 14px;
+        font-size: 0.75rem;
+    }
+}
+
+/* ============================================
+   TABLETS GRANDES (min-width: 769px) y (max-width: 1024px)
+   ============================================ */
+@media (min-width: 769px) and (max-width: 1024px) {
+    .container {
+        max-width: 600px;
+    }
+    
+    .hero h1 {
+        font-size: 1.75rem;
+    }
+    
+    .hero-subtitle {
+        font-size: 1rem;
+    }
+    
+    .section-title h2 {
+        font-size: 1.25rem;
+    }
+    
+    .cart-content {
+        max-width: 600px;
+    }
+}
+
+/* ============================================
+   DESKTOP Y PANTALLAS GRANDES (min-width: 1025px)
+   ============================================ */
+@media (min-width: 1025px) {
+    .container {
+        max-width: 520px;
+    }
+    
+    .hero-content {
+        max-width: 520px;
+    }
+    
+    .hero h1 {
+        font-size: 1.75rem;
+    }
+    
+    .hero-subtitle {
+        font-size: 1rem;
+    }
+    
+    .cart-content {
+        max-width: 520px;
+    }
+    
+    /* Hover effects más pronunciados en desktop */
+    .menu-item:hover {
+        transform: translateY(-2px);
+        box-shadow: var(--shadow-md);
+    }
+    
+    .combo-btn:hover {
+        transform: translateY(-2px);
+    }
+    
+    .qty-btn:hover {
+        transform: scale(1.05);
+    }
+}
+
+/* ============================================
+   PANTALLAS MUY GRANDES (min-width: 1440px)
+   ============================================ */
+@media (min-width: 1440px) {
+    .container {
+        max-width: 540px;
+    }
+    
+    .hero-content {
+        max-width: 540px;
+    }
+    
+    .cart-content {
+        max-width: 540px;
+    }
+}
+
+/* ============================================
+   LANDSCAPE EN MÓVILES (altura baja)
+   ============================================ */
+@media (max-height: 500px) and (orientation: landscape) {
+    .hero {
+        padding: var(--spacing-lg);
+    }
+    
+    .hero-logo {
+        max-height: 45px;
+        margin-bottom: var(--spacing-xs);
+    }
+    
+    .hero h1 {
+        font-size: 1.125rem;
+        margin-bottom: 4px;
+    }
+    
+    .hero-subtitle {
+        font-size: 0.8125rem;
+        margin-bottom: var(--spacing-md);
+    }
+    
+    .modal-content {
+        margin: 20px auto;
+        max-height: 85vh;
+        overflow-y: auto;
+    }
+    
+    .order-review {
+        max-height: 200px;
+    }
+    
+    body {
+        padding-bottom: 85px;
+    }
+}
+
+/* ============================================
+   DISPOSITIVOS CON TOUCH
+   ============================================ */
+@media (hover: none) and (pointer: coarse) {
+    /* Aumentar áreas táctiles mínimas (44x44px recomendado) */
+    .menu-item-header {
+        min-height: 44px;
+        display: flex;
+        align-items: center;
+    }
+    
+    .qty-btn {
+        min-width: 44px;
+        min-height: 44px;
+    }
+    
+    .nav-menu li a {
+        min-height: 48px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    
+    /* Eliminar efectos hover en touch */
+    .menu-item:hover {
+        transform: none;
+        box-shadow: var(--shadow-xs);
+    }
+    
+    .qty-btn:hover {
+        transform: none;
+        background: var(--primary-red);
+    }
+    
+    .combo-btn:hover {
+        transform: none;
+        background: var(--success);
+    }
+    
+    /* Feedback táctil con :active */
+    .menu-item:active {
+        transform: scale(0.98);
+    }
+    
+    .qty-btn:active {
+        transform: scale(0.92);
+    }
+    
+    .combo-btn:active,
+    .btn:active {
+        transform: scale(0.98);
+    }
+}
+
+/* ============================================
+   MODO OSCURO (preferencias del sistema)
+   ============================================ */
+@media (prefers-color-scheme: dark) {
+    /* Podrías implementar modo oscuro aquí si lo deseas */
+    /* Por ahora lo dejamos comentado para mantener diseño claro */
+    /*
+    :root {
+        --bg-light: #1a1a1a;
+        --bg-card: #2d2d2d;
+        --gray-900: #f5f5f5;
+        --gray-800: #e5e5e5;
+    }
+    */
+}
+
+/* ============================================
+   IMPRESIÓN
+   ============================================ */
+@media print {
+    .navbar,
+    .hero,
+    .cart-summary,
+    .footer,
+    .modal,
+    .menu-toggle,
+    .whatsapp-btn,
+    .combo-btn,
+    .qty-btn,
+    .clear-item-btn,
+    .remove-combo-btn {
+        display: none !important;
+    }
+    
+    body {
+        background: white;
+        padding-bottom: 0;
+    }
+    
+    .section {
+        break-inside: avoid;
+        box-shadow: none;
+        border: 1px solid #ccc;
+        page-break-inside: avoid;
+    }
+    
+    .menu-item {
+        break-inside: avoid;
+        page-break-inside: avoid;
+    }
+}
+
+/* ============================================
+   REDUCCIÓN DE MOVIMIENTO (accesibilidad)
+   ============================================ */
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+    }
+    
+    .hero-logo {
+        animation: none;
+    }
+    
+    .promo-header {
+        animation: none;
+    }
+    
+    .badge-promo {
+        animation: none;
+    }
+}
+
+/* ============================================
+   ALTO CONTRASTE (accesibilidad)
+   ============================================ */
+@media (prefers-contrast: high) {
+    :root {
+        --shadow-xs: 0 2px 4px rgba(0,0,0,0.3);
+        --shadow-sm: 0 4px 12px rgba(0,0,0,0.3);
+        --shadow-md: 0 6px 20px rgba(0,0,0,0.35);
+        --shadow-lg: 0 10px 30px rgba(0,0,0,0.4);
+    }
+    
+    .menu-item,
+    .combo-card {
+        border-width: 2px;
+    }
+    
+    input:focus,
+    textarea:focus,
+    select:focus {
+        outline: 3px solid var(--primary-red);
+        outline-offset: 2px;
+    }
+}
+
+/* ============================================
+   OPTIMIZACIONES ESPECÍFICAS POR DISPOSITIVO
+   ============================================ */
+
+/* iPhone SE, iPhone 8 y similares (375px) */
+@media (max-width: 375px) and (min-width: 361px) {
+    .menu-item-image {
+        width: 72px;
+        height: 72px;
+    }
+    
+    .combo-card .menu-item-image {
+        height: 120px;
+    }
+    
+    .hero-logo {
+        max-height: 55px;
+    }
+}
+
+/* iPhone 12/13/14 Pro Max y similares (428px) */
+@media (min-width: 428px) and (max-width: 480px) {
+    .container {
+        max-width: 450px;
+    }
+    
+    .menu-item-image {
+        width: 80px;
+        height: 80px;
+    }
+    
+    .combo-card .menu-item-image {
+        height: 140px;
+    }
+}
+
+/* iPad Mini y tablets pequeñas (768px) */
+@media (min-width: 768px) and (max-width: 820px) {
+    .container {
+        max-width: 520px;
+    }
+    
+    .hero {
+        padding: var(--spacing-3xl) var(--spacing-2xl);
+    }
+    
+    .menu-item-image {
+        width: 90px;
+        height: 90px;
+    }
+    
+    .combo-card .menu-item-image {
+        height: 160px;
+    }
+}
+
+/* iPad Air y tablets medianas (820px) */
+@media (min-width: 820px) and (max-width: 1024px) {
+    .container {
+        max-width: 540px;
+    }
+    
+    .menu-item-image {
+        width: 95px;
+        height: 95px;
+    }
+}
+
+/* ============================================
+   AJUSTES FINOS PARA NAVEGADORES ESPECÍFICOS
+   ============================================ */
+
+/* Safari en iOS - fix para input zoom */
+@supports (-webkit-touch-callout: none) {
+    input,
+    select,
+    textarea {
+        font-size: 16px !important;
+    }
+}
+
+/* Firefox - mejor rendering */
+@-moz-document url-prefix() {
+    .menu-item-image img {
+        image-rendering: -moz-crisp-edges;
+    }
+}
+
+/* Chrome y Edge - optimización de scrolling */
+@supports (scrollbar-width: thin) {
+    .order-review {
+        scrollbar-width: thin;
+        scrollbar-color: var(--primary-red) var(--gray-200);
+    }
+}
+
+/* ============================================
+   MEJORAS DE RENDIMIENTO EN MÓVILES
+   ============================================ */
+@media (max-width: 768px) {
+    /* Reducir complejidad visual en móviles */
+    .hero::before,
+    .hero::after {
+        display: none;
+    }
+    
+    /* Simplificar sombras en móviles */
+    .menu-item,
+    .combo-card {
+        box-shadow: var(--shadow-xs);
+    }
+    
+    /* Optimizar animaciones */
+    .menu-item,
+    .combo-card,
+    .qty-btn {
+        transition-duration: 0.2s;
+    }
+}
+
+/* ============================================
+   AJUSTES PARA PANTALLAS ULTRA ANCHAS
+   ============================================ */
+@media (min-width: 1920px) {
+    .container {
+        max-width: 580px;
+    }
+    
+    .hero-content {
+        max-width: 580px;
+    }
+    
+    .cart-content {
+        max-width: 580px;
+    }
+}
+
+/* ============================================
+   SOPORTE PARA NOTCH Y SAFE AREAS (iPhone X+)
+   ============================================ */
+@supports (padding: max(0px)) {
+    .navbar {
+        padding-left: max(var(--spacing-xl), env(safe-area-inset-left));
+        padding-right: max(var(--spacing-xl), env(safe-area-inset-right));
+    }
+    
+    .cart-summary {
+        padding-bottom: max(var(--spacing-md), env(safe-area-inset-bottom));
+        padding-left: max(var(--spacing-lg), env(safe-area-inset-left));
+        padding-right: max(var(--spacing-lg), env(safe-area-inset-right));
+    }
+    
+    .container {
+        padding-left: max(var(--spacing-lg), env(safe-area-inset-left));
+        padding-right: max(var(--spacing-lg), env(safe-area-inset-right));
+    }
+}
+
+/* ============================================
+   AJUSTES PARA MODO HORIZONTAL EN TABLETS
+   ============================================ */
+@media (min-width: 768px) and (max-width: 1024px) and (orientation: landscape) {
+    .hero {
+        padding: var(--spacing-2xl) var(--spacing-xl);
+    }
+    
+    .hero-logo {
+        max-height: 65px;
+    }
+    
+    .container {
+        max-width: 700px;
+    }
+    
+    .modal-content {
+        max-width: 500px;
+    }
+}
+
+/* ============================================
+   FIX PARA OVERFLOW EN PEQUEÑAS PANTALLAS
+   ============================================ */
+@media (max-width: 320px) {
+    * {
+        word-wrap: break-word;
+        overflow-wrap: break-word;
+    }
+    
+    .menu-item h4,
+    .combo-card h4 {
+        word-break: break-word;
+    }
+    
+    .whatsapp-btn span:last-child {
+        display: none;
+    }
+    
+    .whatsapp-btn {
+        padding: 10px;
+    }
+}
+
+/* ============================================
+   MEJORAS PARA TABLETS EN MODO PORTRAIT
+   ============================================ */
+@media (min-width: 768px) and (max-width: 1024px) and (orientation: portrait) {
+    .container {
+        max-width: 600px;
+    }
+    
+    .menu-category {
+        margin-bottom: var(--spacing-3xl);
+    }
+    
+    .menu-item {
+        margin-bottom: var(--spacing-md);
+    }
+    
+    .combo-card .menu-item-image {
+        height: 180px;
+    }
+}
+
+/* ============================================
+   OPTIMIZACIÓN PARA CONEXIONES LENTAS
+   ============================================ */
+@media (prefers-reduced-data: reduce) {
+    /* Deshabilitar imágenes de fondo decorativas */
+    .hero::before,
+    .hero::after {
+        display: none;
+    }
+    
+    /* Simplificar sombras */
+    * {
+        box-shadow: none !important;
+    }
+    
+    .menu-item,
+    .combo-card {
+        border: 2px solid var(--gray-300);
+    }
+    
+    /* Deshabilitar animaciones */
+    * {
+        animation: none !important;
+        transition: none !important;
+    }
+}
+
+/* ============================================
+   SOPORTE PARA TECLADOS VIRTUALES
+   ============================================ */
+@media (max-width: 768px) {
+    /* Ajustar viewport cuando aparece el teclado */
+    input:focus,
+    textarea:focus,
+    select:focus {
+        scroll-margin-top: 100px;
+    }
+    
+    /* Evitar que el footer tape los inputs */
+    .form-group:last-child {
+        margin-bottom: 120px;
+    }
+}
+
+/* ============================================
+   MEJORAS PARA USUARIOS DE ZOOM
+   ============================================ */
+@media (min-resolution: 2dppx) {
+    /* Asegurar que el texto sea legible en pantallas de alta densidad */
+    body {
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+    }
+    
+    .menu-item h4,
+    .combo-card h4 {
+        font-weight: 600;
+    }
+}
+
+/* ============================================
+   AJUSTES PARA DISPOSITIVOS PLEGABLES
+   ============================================ */
+@media (min-width: 540px) and (max-width: 720px) {
+    .container {
+        max-width: 520px;
+    }
+    
+    .hero-content {
+        max-width: 520px;
+    }
+    
+    .menu-item-image {
+        width: 85px;
+        height: 85px;
+    }
+    
+    .combo-card .menu-item-image {
+        height: 150px;
+    }
+}
+
+/* ============================================
+   ANDROID - AJUSTES ESPECÍFICOS
+   ============================================ */
+@media (max-width: 768px) {
+    /* Fix para problema de altura en Android */
+    @supports (-webkit-appearance: none) {
+        .modal {
+            height: 100vh;
+            height: calc(var(--vh, 1vh) * 100);
+        }
+    }
+}
+
+/* ============================================
+   OPTIMIZACIÓN PARA GALAXY FOLD Y SIMILARES
+   ============================================ */
+@media (max-width: 280px) {
+    .container {
+        padding: 0 8px;
+    }
+    
+    .menu-item-image {
+        width: 55px;
+        height: 55px;
+    }
+    
+    .menu-item h4 {
+        font-size: 0.75rem;
+    }
+    
+    .menu-item p {
+        display: none;
+    }
+    
+    .nav-logo {
+        height: 28px;
+    }
+    
+    .hero-logo {
+        max-height: 45px;
+    }
+    
+    .hero h1 {
+        font-size: 0.9375rem;
+    }
+}
+/* ============================================
+   RESPONSIVE PARA MODAL DE CHECKOUT
+   ============================================ */
+@media (max-width: 768px) {
+    .modal-checkout {
+        max-width: 95%;
+        padding: var(--spacing-xl) var(--spacing-md);
+    }
+    
+    .checkout-summary {
+        padding: var(--spacing-md);
+    }
+    
+    .checkout-order-list {
+        max-height: 150px;
+    }
+    
+    .btn-hero {
+        padding: 12px 24px;
+        font-size: 0.95rem;
+    }
+    
+    .hero-cta {
+        margin-top: var(--spacing-md);
+    }
+}
+
+@media (max-width: 480px) {
+    .modal-checkout {
+        max-width: 100%;
+        margin: 20px auto;
+        padding: var(--spacing-lg) var(--spacing-sm);
+    }
+    
+    .checkout-summary {
+        padding: var(--spacing-sm);
+    }
+    
+    .checkout-summary h4 {
+        font-size: 1rem;
+    }
+    
+    .checkout-order-item {
+        font-size: 0.85rem;
+        flex-direction: column;
+        gap: 4px;
+    }
+    
+    .checkout-total {
+        font-size: 1.1rem;
+        flex-direction: column;
+        gap: 4px;
+        align-items: flex-start;
+    }
+    
+    .btn-hero {
+        padding: 11px 20px;
+        font-size: 0.9rem;
+    }
+}
+
+@media (max-width: 380px) {
+    .modal-checkout {
+        padding: var(--spacing-md) var(--spacing-xs);
+    }
+    
+    .checkout-summary {
+        padding: var(--spacing-xs);
+    }
+    
+    .checkout-order-item {
+        font-size: 0.8rem;
+    }
+    
+    .checkout-total {
+        font-size: 1rem;
+    }
+}
+
+/* Mejoras para animaciones en móviles */
+@media (max-width: 768px) {
+    .menu-item {
+        animation-duration: 0.4s;
+    }
+    
+    .combo-card {
+        animation-duration: 0.6s;
+    }
+    
+    .btn-hero {
+        animation-duration: 0.8s;
+    }
+}
+
+/* Desactivar animaciones complejas en dispositivos de bajo rendimiento */
+@media (prefers-reduced-motion: reduce) {
+    .menu-item-image::before,
+    .category-header::after {
+        animation: none;
+        display: none;
+    }
+    
+    .combo-card .menu-item-badge {
+        animation: none;
+    }
+}
+/* ============================================
+   RESPONSIVE ADICIONAL PARA GRID
+   ============================================ */
+
+/* Tablets horizontales */
+@media (min-width: 768px) and (max-width: 1024px) {
+    .menu-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: var(--spacing-lg);
+    }
+    
+    .menu-grid-items {
+        grid-template-columns: repeat(3, 1fr);
+        gap: var(--spacing-md);
+    }
+}
+
+/* Móviles grandes */
+@media (min-width: 481px) and (max-width: 767px) {
+    .menu-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: var(--spacing-md);
+    }
+    
+    .menu-grid-items {
+        grid-template-columns: repeat(2, 1fr);
+        gap: var(--spacing-sm);
+    }
+}
+
+/* Ajustes específicos para el grid de items en móvil */
+@media (max-width: 480px) {
+    .menu-grid-items .menu-item h4 {
+        font-size: 0.8125rem;
+        margin-bottom: 4px;
+    }
+    
+    .menu-grid-items .menu-item p {
+        font-size: 0.6875rem;
+        line-height: 1.3;
+        -webkit-line-clamp: 2;
+    }
+    
+    .menu-grid-items .price {
+        font-size: 0.9375rem;
+        margin-top: 4px;
+    }
+    
+    .menu-grid-items .quantity-controls {
+        padding: 8px var(--spacing-sm);
+        gap: 4px;
+    }
+    
+    .menu-grid-items .qty-btn {
+        width: 28px;
+        height: 28px;
+        font-size: 1rem;
+    }
+    
+    .menu-grid-items .qty-display {
+        font-size: 0.875rem;
+        min-width: 28px;
+    }
+    
+    .menu-grid-items .clear-item-btn {
+        font-size: 0.75rem;
+        padding: 4px 8px;
+    }
+}
+
+/* Ultra pequeños - volver a layout de fila */
+@media (max-width: 380px) {
+    .menu-grid-items .menu-item {
+        display: flex;
+        flex-direction: row;
+    }
+    
+    .menu-grid-items .menu-item-image {
+        width: 80px;
+        height: 80px;
+        flex-shrink: 0;
+        margin: var(--spacing-xs);
+        border-radius: var(--radius-sm);
+    }
+    
+    .menu-grid-items .menu-item-content {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        padding: var(--spacing-xs);
+    }
+    
+    .menu-grid-items .quantity-controls {
+        margin-top: 0;
+        padding: var(--spacing-xs);
+    }
+}
+
+/* Optimización para pantallas muy anchas */
+@media (min-width: 1440px) {
+    .menu-grid {
+        grid-template-columns: repeat(3, 1fr);
+        max-width: 1200px;
+        margin: 0 auto var(--spacing-xl);
+    }
+    
+    .menu-grid-items {
+        grid-template-columns: repeat(4, 1fr);
+        max-width: 1200px;
+        margin: 0 auto;
+    }
+}
+
+/* Ajustes para landscape en móviles */
+@media (max-height: 500px) and (orientation: landscape) {
+    .menu-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: var(--spacing-sm);
+    }
+    
+    .menu-grid-items {
+        grid-template-columns: repeat(3, 1fr);
+    }
+    
+    .menu-grid-items .menu-item-image {
+        height: 100px;
+    }
+}
+
+/* Mejorar espaciado en grid para touch */
+@media (hover: none) and (pointer: coarse) {
+    .menu-grid {
+        gap: var(--spacing-lg);
+    }
+    
+    .menu-grid-items {
+        gap: var(--spacing-md);
+    }
+    
+    .menu-grid-items .menu-item {
+        min-height: 44px;
+    }
+}
+/* ============================================
+   FIN DEL ARCHIVO RESPONSIVE
+   ============================================ */
