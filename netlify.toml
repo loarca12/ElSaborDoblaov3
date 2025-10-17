@@ -1,0 +1,84 @@
+# netlify.toml - Configuración Optimizada para El Sabor Dobla'O
+
+[build]
+  publish = "."
+  command = "echo 'Build completado'"
+
+# Headers para optimización de caché y compresión
+[[headers]]
+  for = "/*"
+  [headers.values]
+    # Seguridad
+    X-Frame-Options = "DENY"
+    X-Content-Type-Options = "nosniff"
+    X-XSS-Protection = "1; mode=block"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+    
+    # Compresión
+    Content-Encoding = "gzip, br"
+
+# Caché agresivo para imágenes (1 año)
+[[headers]]
+  for = "/assets/images/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+# Caché para CSS y JS (1 mes)
+[[headers]]
+  for = "*.css"
+  [headers.values]
+    Cache-Control = "public, max-age=2592000"
+    
+[[headers]]
+  for = "*.js"
+  [headers.values]
+    Cache-Control = "public, max-age=2592000"
+
+# Caché corto para HTML (1 hora)
+[[headers]]
+  for = "/*.html"
+  [headers.values]
+    Cache-Control = "public, max-age=3600, must-revalidate"
+
+# Preload de recursos críticos
+[[headers]]
+  for = "/"
+  [headers.values]
+    Link = '''
+    </propertie.png>; rel=preload; as=image,
+    </css/style.css>; rel=preload; as=style,
+    </js/menu.js>; rel=preload; as=script,
+    </js/cart.js>; rel=preload; as=script,
+    </js/order.js>; rel=preload; as=script,
+    <https://fonts.googleapis.com>; rel=preconnect; crossorigin,
+    <https://fonts.gstatic.com>; rel=preconnect; crossorigin
+    '''
+
+# Redireccionamientos
+[[redirects]]
+  from = "/index.html"
+  to = "/"
+  status = 301
+  force = true
+
+# Plugin de optimización de imágenes (opcional)
+[[plugins]]
+  package = "@netlify/plugin-lighthouse"
+
+# Optimización de assets
+[build.processing]
+  skip_processing = false
+
+[build.processing.css]
+  bundle = true
+  minify = true
+
+[build.processing.js]
+  bundle = false
+  minify = true
+
+[build.processing.html]
+  pretty_urls = true
+
+[build.processing.images]
+  compress = true
